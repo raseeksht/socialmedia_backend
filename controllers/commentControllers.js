@@ -11,7 +11,8 @@ export const addComment = asyncHandler(async (req, res) => {
         post_ref: postId,
         commentor: req.user._id,
         content,
-        parent_comment_ref
+        parent_comment_ref,
+        likes: 0
     })
 
     if (comment) {

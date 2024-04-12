@@ -5,6 +5,7 @@ import usersRoute from './routes/usersRoute.js';
 import { configDotenv } from 'dotenv';
 import postsRoute from './routes/postsRoute.js';
 import commentsRoute from './routes/commentsRoute.js';
+import likesRoute from './routes/likesRoute.js';
 
 configDotenv();
 
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use("/api/users", usersRoute);
 app.use("/api/posts", postsRoute);
 app.use("/api/comments", commentsRoute);
+app.use("/api/likes", likesRoute);
 
 app.use((req, res, next) => {
     const error = new Error(`404 not found: ${req.originalUrl}`)

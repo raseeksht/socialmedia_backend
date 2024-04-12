@@ -22,7 +22,8 @@ const commentSchena = mongoose.Schema({
     edited: {
         type: Boolean,
         default: false
-    }
+    },
+    likes: Number
 }, { timestamps: true })
 
 const commentModel = mongoose.model("comment", commentSchena);
