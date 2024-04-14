@@ -74,7 +74,7 @@ const getUser = asyncHandler(async (req, res) => {
         res.json(user)
     } catch (err) {
         console.log(err)
-        res.send("error occured", err)
+        res.status(500).json(makeResponse("f", "Error fetching user"))
     }
 })
 

@@ -26,10 +26,22 @@ const userSchema = mongoose.Schema({
     coverPic: {
         type: String,
         default: "https://imgs.search.brave.com/x13bsOhuhhsIiiG5GDEv0uF-9-i2z41NdXklnWKv_k4/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9jZG4x/Lmljb25maW5kZXIu/Y29tL2RhdGEvaWNv/bnMvdXNlci1waWN0/dXJlcy8xMDAvdW5r/bm93bi01MTIucG5n",
-    }
+    },
+    friends: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
+    }],
+    friendRequestSent: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
+    }],
+    friendRequestReceived: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
+    }]
 }, { timestamps: true })
 
-userSchema.pre('save', async function (next) { // this line
+userSchema.pre('save', async function (next) {
     const user = this;
     if (!user.isModified('password')) return next();
 

@@ -2,8 +2,11 @@ import express from "express";
 import { createUser, changePassword, getUser, changeName, loginUser } from "../controllers/userContollers.js";
 import fieldValidator from "../middleware/fieldValidator.js";
 import validateUser from "../middleware/validateUser.js";
+import friendRequestRoute from "./friendRequestRoute.js";
 
 const router = express.Router();
+
+router.use("/friend-request", validateUser, friendRequestRoute)
 
 router.post("/", fieldValidator(['firstName', 'lastName', 'email', 'password']), createUser);
 
@@ -14,6 +17,7 @@ router.put("/changename/:userId", fieldValidator(['firstName', 'lastName']), val
 router.get("/:userId", getUser);
 
 router.post("/login", fieldValidator(['email', 'password']), loginUser);
+
 
 
 export default router;
