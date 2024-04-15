@@ -6,7 +6,7 @@ import fieldValidator from '../middleware/fieldValidator.js';
 const router = express.Router();
 
 // add comment to post
-router.post("/:postId", validateUser, fieldValidator(['content']), addComment);
+router.post("/:postId", validateUser, fieldValidator(['content', 'comment_on']), addComment);
 
 // fetch comments for specific post
 router.get("/:postId", fetchCommentForPost);

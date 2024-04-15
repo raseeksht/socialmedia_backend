@@ -9,7 +9,7 @@ const router = express.Router();
 // like a post or comment
 //action= "like" or "unlike"
 
-router.post("/post/:postId", fieldValidator(['action']), validateUser, like_dislike_post_handler);
+router.post("/post/:postId", fieldValidator(['action', 'like_on']), validateUser, like_dislike_post_handler);
 
 router.post("/comment/:commentId", fieldValidator(['action']), validateUser, like_dislike_comment_handler);
 

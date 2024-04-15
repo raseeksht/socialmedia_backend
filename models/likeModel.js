@@ -8,7 +8,7 @@ const likeSchema = mongoose.Schema({
     },
     like_on: {
         type: String,
-        enum: ['post', 'comment'],
+        enum: ['post', 'comment', 'share'],
         required: true
     },
     pc_ref: {

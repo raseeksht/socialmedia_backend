@@ -3,11 +3,12 @@ import express from "express";
 import validateUser from "../middleware/validateUser.js";
 import fieldValidator from "../middleware/fieldValidator.js";
 import { createPost, fetchPosts, editPost, deletePost } from "../controllers/postControllers.js";
-
+import shareRoute from "./shareRoute.js";
 
 const router = express.Router();
 
 // creating post required either content or picture monitored in createPost()
+router.use("/share", validateUser, shareRoute);
 router.post("/", validateUser, createPost)
 router.get("/", fetchPosts)
 

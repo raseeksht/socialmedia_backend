@@ -1,9 +1,15 @@
 import mongoose, { mongo } from "mongoose";
 
 const commentSchena = mongoose.Schema({
+    comment_on: {
+        type: String,
+        emum: ["share", 'post'],
+        required: true
+    },
     post_ref: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "post"
+        refPath: 'comment_on',
+        required: true
     },
     commentor: {
         type: mongoose.Schema.Types.ObjectId,

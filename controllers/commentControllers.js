@@ -5,14 +5,17 @@ import { makeResponse } from "../helpers/helperFunctions.js";
 export const addComment = asyncHandler(async (req, res) => {
     const postId = req.params.postId;
     // parent_comment_ref can be null for root/main comment
-    const { content, parent_comment_ref } = req.body;
+    const { content, parent_comment_ref, comment_on } = req.body;
+
+    if (!["post", "share"].includes(comment_on)) return res.status(400).json(makeResponse("f", "comment_on should be either post or shared"))
 
     const comment = commentModel.create({
         post_ref: postId,
         commentor: req.user._id,
         content,
         parent_comment_ref,
-        likes: 0
+        likes: 0,
+        comment_on
     })
 
     if (comment) {
@@ -25,6 +28,7 @@ export const addComment = asyncHandler(async (req, res) => {
 
 const getGroupedCommentAndReplies = async (post_ref, parent_comment_ref = null) => {
     const result = [];
+    // didnt populate post_ref cause client would already have post detail if they have postId
     const mainComments = await commentModel
         .find({ parent_comment_ref, post_ref })
         .populate(
@@ -47,7 +51,7 @@ const getGroupedCommentAndReplies = async (post_ref, parent_comment_ref = null) 
 
 export const fetchCommentForPost = asyncHandler(async (req, res) => {
     const postId = req.params.postId;
-    const result = await getGroupedCommentAndReplies(postId, null)
+    const result = await getGroupedCommentAndReplies(postId, null);
     res.json(result)
 })
 
