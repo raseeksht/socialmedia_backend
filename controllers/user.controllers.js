@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import userModel from "../models/userModel.js";
+import userModel from "../models/user.models.js";
 import { generateJwt, makeResponse } from "../helpers/helperFunctions.js";
 
 const createUser = asyncHandler(async (req, res) => {
@@ -27,12 +27,11 @@ const createUser = asyncHandler(async (req, res) => {
 })
 
 const changePassword = asyncHandler(async (req, res) => {
-    const userId = req.params.userId
     const { oldPassword, newPassword } = req.body
     if (!oldPassword || !newPassword) return res.status(400).json(makeResponse("f", "oldPassword and newPassword Required"))
     if (oldPassword == newPassword) return res.status(400).json(makeResponse("f", "old and new password cannot be same"))
 
-    const user = await userModel.findOne({ _id: userId })
+    const user = await userModel.findOne({ _id: req.user._id })
     if (await user.matchPassword(oldPassword)) {
         user.password = newPassword
         user.save()
@@ -43,10 +42,9 @@ const changePassword = asyncHandler(async (req, res) => {
 })
 
 const changeName = asyncHandler(async (req, res) => {
-    const userId = req.params.userId
     const { firstName, lastName } = req.body
 
-    const user = await userModel.findOneAndUpdate({ _id: userId }, { firstName, lastName })
+    const user = await userModel.findOneAndUpdate({ _id: req.user._id }, { firstName, lastName })
     if (user) {
         return res.json(makeResponse("s", "Name Change Successful"))
     } else {

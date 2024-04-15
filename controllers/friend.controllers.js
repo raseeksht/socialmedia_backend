@@ -1,6 +1,5 @@
 import asyncHandler from "express-async-handler";
-import userModel from "../models/userModel.js";
-import mongoose from "mongoose";
+import userModel from "../models/user.models.js";
 import { makeResponse } from "../helpers/helperFunctions.js";
 
 const acceptFriendRequest = async (requestor, acceptor) => {

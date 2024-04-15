@@ -1,5 +1,5 @@
 import mongoose, { mongo } from "mongoose";
-import commentModel from "./commentModel.js";
+import commentModel from "./comment.models.js";
 
 const postSchema = mongoose.Schema({
     // string content of a post

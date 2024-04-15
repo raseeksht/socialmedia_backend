@@ -2,7 +2,7 @@ import express from "express";
 // import postModel from "../models/postModel.js";
 import validateUser from "../middleware/validateUser.js";
 import fieldValidator from "../middleware/fieldValidator.js";
-import { createPost, fetchPosts, editPost, deletePost } from "../controllers/postControllers.js";
+import { createPost, fetchPosts, editPost, deletePost } from "../controllers/post.controllers.js";
 import shareRoute from "./shareRoute.js";
 
 const router = express.Router();

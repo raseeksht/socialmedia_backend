@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import { shareModel } from "../models/shareModel.js";
+import { shareModel } from "../models/share.models.js";
 import { makeResponse } from "../helpers/helperFunctions.js";
 
 

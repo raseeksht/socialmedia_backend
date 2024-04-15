@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import commentModel from "../models/commentModel.js";
+import commentModel from "../models/comment.models.js";
 import { makeResponse } from "../helpers/helperFunctions.js";
 
 export const addComment = asyncHandler(async (req, res) => {

@@ -1,7 +1,7 @@
 import express from 'express';
 import validateUser from '../middleware/validateUser.js';
 import fieldValidator from '../middleware/fieldValidator.js';
-import { like_dislike_comment_handler, like_dislike_post_handler, likedPostOrComment } from '../controllers/likeContollers.js';
+import { like_dislike_comment_handler, like_dislike_post_handler, likedPostOrComment } from '../controllers/like.controllers.js';
 
 
 const router = express.Router();

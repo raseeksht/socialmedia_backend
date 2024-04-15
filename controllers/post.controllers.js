@@ -1,6 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import { makeResponse } from '../helpers/helperFunctions.js';
-import postModel from '../models/postModel.js';
+import postModel from '../models/post.models.js';
 
 const createPost = asyncHandler(async (req, res) => {
     const { content, picUrl } = req.body;
@@ -44,7 +44,7 @@ const editPost = asyncHandler(async (req, res) => {
     }
     const post = await postModel.findOneAndUpdate({ _id: postId, creator: req.user._id }, updateQuery, { new: true }).populate({
         path: "creator",
-        select: "-password"
+        select: "firstName lastName profilePic"
     })
     if (!post) {
         return res.status(401).json(makeResponse("f", "Invalid Modification. Not your post to edit"))

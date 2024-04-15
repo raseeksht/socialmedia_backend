@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
 import { makeResponse } from "../helpers/helperFunctions.js";
-import likeModel from "../models/likeModel.js";
+import likeModel from "../models/like.models.js";
 import mongoose from "mongoose";
 
 const like_dislike_handler = async (action, postOrCommentRef, onPostOrCommentOrShare, user) => {

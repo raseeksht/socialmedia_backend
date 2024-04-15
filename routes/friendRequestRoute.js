@@ -8,7 +8,7 @@ import {
     handleUnFriend,
     myFriendList,
     mutualFriends
-} from "../controllers/friendControllers.js";
+} from "../controllers/friend.controllers.js";
 
 
 

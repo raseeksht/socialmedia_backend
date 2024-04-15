@@ -1,5 +1,5 @@
 import express from 'express';
-import { getSharedPost, sharePost, deleteSharedPost } from '../controllers/shareControllers.js';
+import { getSharedPost, sharePost, deleteSharedPost } from '../controllers/share.controllers.js';
 
 const router = express.Router();
 

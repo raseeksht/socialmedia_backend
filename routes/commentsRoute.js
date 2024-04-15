@@ -1,6 +1,6 @@
 import express from 'express';
 import validateUser from '../middleware/validateUser.js';
-import { addComment, editComment, fetchCommentForPost, removeComment } from '../controllers/commentControllers.js';
+import { addComment, editComment, fetchCommentForPost, removeComment } from '../controllers/comment.controllers.js';
 import fieldValidator from '../middleware/fieldValidator.js';
 
 const router = express.Router();
