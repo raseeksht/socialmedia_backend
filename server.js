@@ -6,6 +6,8 @@ import { configDotenv } from 'dotenv';
 import postsRoute from './routes/postsRoute.js';
 import commentsRoute from './routes/commentsRoute.js';
 import likesRoute from './routes/likesRoute.js';
+import chatRoutes from './routes/chat.routes.js';
+import validateUser from './middleware/validateUser.js';
 
 configDotenv();
 
@@ -22,6 +24,7 @@ app.use("/api/users", usersRoute);
 app.use("/api/posts", postsRoute);
 app.use("/api/comments", commentsRoute);
 app.use("/api/likes", likesRoute);
+app.use("/api/chats", validateUser, chatRoutes);
 
 app.use((req, res, next) => {
     const error = new Error(`404 not found: ${req.originalUrl}`)
@@ -30,11 +33,11 @@ app.use((req, res, next) => {
 })
 
 app.use((err, req, res, next) => {
-    res.status(err.status || 500);
+    res.status(res.statusCode || 500);
     res.json({
         error: {
             message: err.message,
-            stack: err.stack
+            stack: process.env.NODE_ENV == "production" ? null : err.stack
         }
     })
 })
