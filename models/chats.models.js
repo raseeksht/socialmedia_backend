@@ -19,10 +19,10 @@ const chatSchema = mongoose.Schema({
             ref: "user"
         }
     ],
-    admin: {
+    admins: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "user"
-    }
+    }]
 }, {
     timestamps: true
 })

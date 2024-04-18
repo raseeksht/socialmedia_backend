@@ -1,6 +1,6 @@
 import express from "express";
 import fieldValidator from "../middleware/fieldValidator.js";
-import { createChat, getMyChats, addOrRemoveParticipants } from "../controllers/chat.controllers.js"
+import { createChat, getMyChats, addOrRemoveParticipants, leaveGroup, makeAdmin } from "../controllers/chat.controllers.js"
 
 const router = express.Router()
 
@@ -19,9 +19,9 @@ router.post("/remove/:chatId/:userId", (req, res) => {
     addOrRemoveParticipants(req, res, action)
 });
 
-// router.post("/leavegroup", leaveGroup);
+router.post("/leavegroup/:chatId", leaveGroup);
 
-// router.post("/makeadmin/:userId", makeAdmin);
+router.post("/makeadmin/:chatId/:userId", makeAdmin);
 
 export default router;
 
