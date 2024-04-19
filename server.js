@@ -8,6 +8,7 @@ import commentsRoute from './routes/commentsRoute.js';
 import likesRoute from './routes/likesRoute.js';
 import chatRoutes from './routes/chat.routes.js';
 import validateUser from './middleware/validateUser.js';
+import messageRoute from './routes/message.routes.js';
 
 configDotenv();
 
@@ -25,6 +26,7 @@ app.use("/api/posts", postsRoute);
 app.use("/api/comments", commentsRoute);
 app.use("/api/likes", likesRoute);
 app.use("/api/chats", validateUser, chatRoutes);
+app.use("/api/messages", validateUser, messageRoute);
 
 app.use((req, res, next) => {
     const error = new Error(`404 not found: ${req.originalUrl}`)

@@ -133,8 +133,6 @@ const makeAdmin = asyncHandler(async (req, res) => {
     } else {
         throw new Error("Failed to add admin");
     }
-
-
 })
 
 export { createChat, getMyChats, addOrRemoveParticipants, leaveGroup, makeAdmin };
