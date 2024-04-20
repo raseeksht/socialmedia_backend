@@ -32,4 +32,21 @@ const sendMessage = asyncHandler(async (req, res) => {
 })
 
 
-export { sendMessage };
+const fetchMessages = asyncHandler(async (req, res) => {
+    const chatId = req.params.chatId;
+    try {
+        const isChatAvailable = await chatModel.findOne({ _id: chatId, participants: { $in: req.user._id } })
+
+        if (!isChatAvailable) {
+            return res.status(403).json(makeResponse("f", "chat unavailable"));
+        }
+
+        const messages = await messageModel.find({ chat: chatId }).populate("sender", "firstName lastName profilePic")
+        res.json(makeResponse("s", "message fetched successfullly", messages));
+    }
+    catch (err) {
+        throw new Error(err?.message || "unknown error occured")
+    }
+})
+
+export { sendMessage, fetchMessages };
