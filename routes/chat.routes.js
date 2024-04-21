@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.post("/", fieldValidator(['participants']), createChat);
 
-// get chat that requester is present
+// get chat that requester is present in
 router.get("/", getMyChats)
 
 router.post("/add/:chatId/:userId", (req, res) => {

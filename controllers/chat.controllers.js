@@ -72,6 +72,7 @@ const addOrRemoveParticipants = asyncHandler(async (req, res, action) => {
     if (!isadmin) {
         return res.status(403).json(makeResponse("f", "You are not the admin of this group"))
     }
+    if (!isadmin.isGroupChat) return res.status(400).json(makeResponse("f", "can't add... not a group chat"))
 
 
     const updateAction = action == "add" ? "$addToSet" : "$pull"
