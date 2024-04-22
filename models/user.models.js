@@ -38,7 +38,14 @@ const userSchema = mongoose.Schema({
     friendRequestReceived: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
-    }]
+    }],
+    totp: {
+        type: String
+    },
+    twoFactorAuthRequired: {
+        type: Boolean,
+        default: false
+    }
 }, { timestamps: true })
 
 userSchema.pre('save', async function (next) {
