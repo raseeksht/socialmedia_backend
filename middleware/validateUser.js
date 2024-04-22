@@ -10,8 +10,16 @@ const validateUser = (req, res, next) => {
     const token = auth.split(" ")[1]
     const decodedToken = jwt.decode(token, process.env.JWT_SECRET)
     if (decodedToken) {
-        req.user = { _id: decodedToken._id }
-        next()
+        if ((decodedToken.twoFactorAuthRequired && decodedToken.twoFactorAuthVerified) || !decodedToken.twoFactorAuthRequired) {
+            req.user = {
+                _id: decodedToken._id
+            }
+            next()
+        } else {
+            console.log(decodedToken.twoFactorAuthRequired)
+
+            res.json(makeResponse("f", "2FA not verified"))
+        }
     } else {
         return res.status(401).json(makeResponse("f", "Invalid or expired token"))
     }
