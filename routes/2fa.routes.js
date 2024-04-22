@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get("/getqr", getQR);
 
-router.post("/set2fa", fieldValidator(['otp']), set2fa);
+router.post("/set2fa", fieldValidator(['otp', 'secretToken']), set2fa);
 
 // router.post("/verify2fa", fieldValidator(['otp']), verify2fa);
 
