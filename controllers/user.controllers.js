@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
 import userModel from "../models/user.models.js";
-import { generateJwt, makeResponse } from "../helpers/helperFunctions.js";
+import { decodeAuthHeaderToken, generateJwt, makeResponse, verifyOtp } from "../helpers/helperFunctions.js";
 
 const createUser = asyncHandler(async (req, res) => {
     const { firstName, lastName, email, password, profilePic, coverPic } = req.body;
@@ -57,8 +57,17 @@ const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body
     const user = await userModel.findOne({ email })
     if (user && await user.matchPassword(password)) {
-        const token = await generateJwt({ _id: user._id })
-        res.json({ status: "ok", message: "Login Success", token })
+        let tokenPayload;
+        let message;
+        if (user.twoFactorAuthRequired) {
+            tokenPayload = { _id: user._id, twoFactorAuthRequired: true, twoFactorAuthVerified: false };
+            message = "Enter OTP to continue login";
+        } else {
+            tokenPayload = { _id: user._id, twoFactorAuthRequired: false }
+            message = "Login Success"
+        }
+        const token = await generateJwt(tokenPayload)
+        res.json({ status: "ok", message, token })
     } else {
         res.status(401).json(makeResponse("f", "username or password invalid"))
     }
@@ -76,4 +85,27 @@ const getUser = asyncHandler(async (req, res) => {
     }
 })
 
-export { createUser, changePassword, getUser, changeName, loginUser }
+const afterLoginVerify2fa = asyncHandler(async (req, res) => {
+    const { otp } = req.body;
+    console.log("i am eher")
+    try {
+        const decoded = decodeAuthHeaderToken(req);
+        console.log("decoded", decoded)
+        if (decoded.error) {
+            return res.status(403).json(makeResponse("f", decoded.error))
+        }
+        const user = await userModel.findOne({ _id: decoded._id })
+        console.log(user)
+        if (verifyOtp(otp, await user.totp)) {
+            const token = await generateJwt({ _id: user._id, twoFactorAuthRequired: true, twoFactorAuthVerified: true })
+            res.json({ status: "ok", message: "Valid Otp", token })
+        } else {
+            res.status(403).json(makeResponse("f", "Invalid Otp"))
+        }
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }
+})
+
+export { createUser, changePassword, getUser, changeName, loginUser, afterLoginVerify2fa }
