@@ -45,4 +45,27 @@ const set2fa = asyncHandler(async (req, res) => {
     }
 })
 
-export { getQR, set2fa };
+const remove2fa = asyncHandler(async (req, res) => {
+    const { otp } = req.body;
+    try {
+        const user = await userModel.findOne({ _id: req.user._id });
+        if (!user.twoFactorAuthRequired) return res.status(400).json(makeResponse("f", "2fa is not enabled so why remove it?"))
+
+        if (verifyOtp(otp, user.totp)) {
+            user.twoFactorAuthRequired = false;
+            user.totp = "";
+            if (await user.save()) {
+                res.json(makeResponse("s", "2FA disabled!!"))
+            }
+            else {
+                throw new Error("Error removing 2fa")
+            }
+        } else {
+            res.status(403).json(makeResponse("f", "Invalid OTP"))
+        }
+    } catch (err) {
+        throw new Error(err?.message || "Unknown error while remove 2fa");
+    }
+})
+
+export { getQR, set2fa, remove2fa };

@@ -12,7 +12,6 @@ import likesRoute from './routes/likesRoute.js';
 import chatRoutes from './routes/chat.routes.js';
 import validateUser from './middleware/validateUser.js';
 import messageRoute from './routes/message.routes.js';
-import { create } from 'domain';
 
 configDotenv();
 
@@ -26,7 +25,9 @@ app.use(express.json());
 
 const server = createServer(app);
 
-
+app.get("/", (req, res) => {
+    res.send("API Up and running. <a href='https://documenter.getpostman.com/view/26416014/2sA3Bq3WRX#514ba460-edba-4dd2-ae79-5b489820083f' target='__blank'>docs</a>")
+})
 app.use("/api/users", usersRoute);
 app.use("/api/posts", postsRoute);
 app.use("/api/comments", commentsRoute);
