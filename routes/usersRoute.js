@@ -1,5 +1,12 @@
 import express from "express";
-import { createUser, changePassword, getUser, changeName, loginUser, afterLoginVerify2fa } from "../controllers/user.controllers.js";
+import {
+    createUser,
+    changePassword,
+    getUser,
+    changeName,
+    loginUser,
+    afterLoginVerify2fa
+} from "../controllers/user.controllers.js";
 import fieldValidator from "../middleware/fieldValidator.js";
 import validateUser from "../middleware/validateUser.js";
 import friendRequestRoute from "./friendRequestRoute.js";
@@ -22,6 +29,7 @@ router.post("/login", fieldValidator(['email', 'password']), loginUser);
 router.post("/login/verify2fa", fieldValidator(['otp']), afterLoginVerify2fa);
 
 router.get("/:userId", getUser);
+
 
 
 

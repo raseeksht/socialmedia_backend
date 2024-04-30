@@ -108,4 +108,13 @@ const afterLoginVerify2fa = asyncHandler(async (req, res) => {
     }
 })
 
-export { createUser, changePassword, getUser, changeName, loginUser, afterLoginVerify2fa }
+
+
+export {
+    createUser,
+    changePassword,
+    getUser,
+    changeName,
+    loginUser,
+    afterLoginVerify2fa,
+}
