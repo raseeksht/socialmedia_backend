@@ -5,9 +5,12 @@ import { makeResponse } from "../helpers/helperFunctions.js";
 
 const sharePost = asyncHandler(async (req, res) => {
     const postId = req.params.postId;
+    const { sharedOn } = req.body;
+    if (!sharedOn) return res.status(400).json(makeResponse("f", "sharedOn field required"))
+    if (!['user', 'community', 'page'].includes(sharedOn)) return res.status(400).json(makeResponse("f", "invalid value for sharedOn"))
 
     try {
-        let share = await shareModel.create({ post_ref: postId, shared_by: req.user._id, likes: 0 })
+        let share = await shareModel.create({ post_ref: postId, shared_by: req.user._id, likes: 0, shared_on: sharedOn })
         share = await share.populate([
             {
                 path: "post_ref",
