@@ -3,11 +3,22 @@ import { makeResponse } from '../helpers/helperFunctions.js';
 import postModel from '../models/post.models.js';
 
 const createPost = asyncHandler(async (req, res) => {
-    const { content, picUrl } = req.body;
+    // postedOn can be either user, community or page
+    // postedOnId is the reference to user community or page
+    // if postedOn == user, postedOnId is not required 
+    // TOdo: complete this function
+    const { content, picUrl, postedOn, postedOnId } = req.body;
     if (!(content || picUrl)) {
         return res.status(400).json(makeResponse("f", "content or picUrl required to create post"));
     }
-    const data = { creator: req.user._id, content, picUrl, likes: 0, shares: 0 }
+    if (!postedOn) {
+        return res.status(400).json(makeResponse("f", "postedOn required"))
+    }
+    if (!['user', 'community', 'page'].includes(postedOn)) {
+        return res.status(400).json(makeResponse("f", "invalid postedOn value, valid values = (user, community or page)"))
+    }
+
+    const data = { creator: req.user._id, content, picUrl, postedOn }
     const post = await postModel.create(data)
 
     const aaa = await post.populate([
