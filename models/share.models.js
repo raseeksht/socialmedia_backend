@@ -9,6 +9,16 @@ const shareSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
     },
+    shared_on: {
+        type: String,
+        enum: ['user', 'community', 'page'],
+        required: true
+    },
+    shared_on_ref: {
+        type: mongoose.Schema.Types.ObjectId,
+        refPath: "shared_on",
+        required: true
+    },
     likes: Number,
 
 }, { timestamps: true })
