@@ -35,8 +35,7 @@ const postSchema = mongoose.Schema({
     },
     postedOnRef: {
         type: mongoose.Schema.Types.ObjectId,
-        refPath: "postedOn",
-        required: true
+        refPath: "postedOn"
     }
 
 }, { timestamps: true });

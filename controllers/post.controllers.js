@@ -7,7 +7,7 @@ const createPost = asyncHandler(async (req, res) => {
     // postedOnId is the reference to user community or page
     // if postedOn == user, postedOnId is not required 
     // TOdo: complete this function
-    const { content, picUrl, postedOn, postedOnId } = req.body;
+    const { content, picUrl, postedOn, postedOnRef } = req.body;
     if (!(content || picUrl)) {
         return res.status(400).json(makeResponse("f", "content or picUrl required to create post"));
     }
@@ -17,8 +17,12 @@ const createPost = asyncHandler(async (req, res) => {
     if (!['user', 'community', 'page'].includes(postedOn)) {
         return res.status(400).json(makeResponse("f", "invalid postedOn value, valid values = (user, community or page)"))
     }
+    if (postedOn !== "user" && !postedOnRef) {
+        return res.status(400).json(makeResponse("f", "postedOnRef (communityId || pageId) required"))
 
-    const data = { creator: req.user._id, content, picUrl, postedOn }
+    }
+
+    const data = { creator: req.user._id, content, picUrl, postedOn, postedOnRef }
     const post = await postModel.create(data)
 
     const aaa = await post.populate([
