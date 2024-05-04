@@ -3,6 +3,48 @@ import postModel from '../models/post.models.js';
 import shareModel from '../models/share.models.js';
 import { makeResponse } from '../helpers/helperFunctions.js';
 
+
+const getTimelineResult = asyncHandler(async (req, res, id, fetchType = "user") => {
+    // timeline fetchType can be user, community or page
+    const postFilter = {};
+    switch (fetchType) {
+        case "user":
+            postFilter.creator = id;
+            break;
+        case "community":
+            postFilter.postedOnRef = id;
+            break;
+        case "page":
+            postFilter.postedOnRef = id;
+            break;
+        default:
+            throw new Error(`Invalid Value for fetchType : '${fetchType}'`)
+            break;
+    }
+
+    const shareFilter = { shared_on_ref: id, shared_on: fetchType };
+
+    postFilter.postedOn = fetchType;
+
+    console.log(shareFilter, postFilter)
+
+    try {
+        const posts = await postModel.find(postFilter).populate("creator", "firstName lastName profilePic");
+        const shares = await shareModel.find(shareFilter).populate({
+            path: "post_ref",
+            populate: {
+                path: "creator",
+                select: "firstName lastName profilePic"
+            }
+        });
+        const timeline = [...posts, ...shares].sort((p1, p2) => p2.createdAt - p1.createdAt)
+        res.json(makeResponse("s", "timeline fetched successfully", timeline));
+    } catch (err) {
+        throw new Error(err.message || "some error getting timeline")
+    }
+
+});
+
 const userTimeline = asyncHandler(async (req, res) => {
     const userId = req.params.userId;
 
@@ -56,5 +98,6 @@ const communityTimeline = asyncHandler(async (req, res) => {
 
 export {
     userTimeline,
-    communityTimeline
+    communityTimeline,
+    getTimelineResult
 }
