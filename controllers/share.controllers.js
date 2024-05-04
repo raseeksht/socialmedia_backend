@@ -59,8 +59,8 @@ const deleteSharedPost = asyncHandler(async (req, res) => {
     const sharedPostId = req.params.sharedPostId;
     const deletedSharedPost = await shareModel.deleteOne({ _id: sharedPostId })
 
-    if (deleteSharedPost) {
-        res.json(makeResponse("s", "deleted", deleteSharedPost))
+    if (deletedSharedPost) {
+        res.json(makeResponse("s", "deleted", deletedSharedPost))
     } else {
         res.status(500).json(makeResponse("f", "failed to delted"))
     }
