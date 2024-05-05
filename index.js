@@ -48,10 +48,9 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
     res.status(res.statusCode || 500);
     res.json({
-        error: {
-            message: err.message,
-            stack: process.env.NODE_ENV == "production" ? null : err.stack
-        }
+        status: "failed",
+        message: err.message,
+        stack: process.env.NODE_ENV == "dev" ? err.stack : null
     })
 })
 

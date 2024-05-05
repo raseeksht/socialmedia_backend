@@ -5,20 +5,19 @@ import { makeResponse } from "../helpers/helperFunctions.js";
 
 const createCommunity = asyncHandler(async (req, res) => {
     let { name, members, coverPic, isPublic, approveAnyPost } = req.body;
-    members = JSON.parse(members)
-    members.push(req.user._id);
-    console.log(members)
-    if (members.length <= 2) {
-        return res.status(400).json(makeResponse("f", "at least 2 members(excluding you) required to create community"))
-    }
-    console.log(members)
-    const admin = req.user._id;
-
     try {
+        members = JSON.parse(members)
+        if (!(members instanceof Array)) return res.status(400).json(makeResponse("s", "members should be of type array"))
+        members.push(req.user._id);
+
+        if (members.length <= 2) {
+            return res.status(400).json(makeResponse("f", "at least 2 members(excluding you) required to create community"))
+        }
+        const admin = req.user._id;
         const community = await communityModel.create({ name, members, coverPic, isPublic, approveAnyPost, admins: admin })
         res.json(makeResponse("s", "Community Created Successfully", community))
     } catch (err) {
-        throw new Error(err.message || "failed to create community")
+        throw new Error(err.message || "failed to create community");
     }
 })
 
