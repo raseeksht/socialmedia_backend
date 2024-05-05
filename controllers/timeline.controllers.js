@@ -38,7 +38,11 @@ const getTimelineResult = asyncHandler(async (req, res, id, fetchType = "user") 
             }
         });
         const timeline = [...posts, ...shares].sort((p1, p2) => p2.createdAt - p1.createdAt)
-        res.json(makeResponse("s", "timeline fetched successfully", timeline));
+        res.json(makeResponse(
+            "s",
+            `${fetchType.replace(/^\w/, (c) => c.toUpperCase())} timeline fetched successfully`, // dynamic captialize first letter
+            timeline
+        ));
     } catch (err) {
         throw new Error(err.message || "some error getting timeline")
     }
