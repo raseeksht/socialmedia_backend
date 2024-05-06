@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import { makeResponse } from '../helpers/helperFunctions.js';
 import postModel from '../models/post.models.js';
+import communityModel from '../models/community.models.js';
 
 const createPost = asyncHandler(async (req, res) => {
     // postedOn can be either user, community or page
@@ -70,7 +71,18 @@ const editPost = asyncHandler(async (req, res) => {
 const deletePost = asyncHandler(async (req, res) => {
     const postId = req.params.postId;
 
-    const post = await postModel.findOneAndDelete({ _id: postId, creator: req.user._id })
+    const post1 = await postModel.findOne({ _id: postId }).populate("postedOnRef", "admins")
+
+    let isAdmin, creatorOrAdminFilter = { _id: postId };
+    if (post1.postedOn == "community") {
+        // admin of community has permission to delete any post created by other creator
+        // checks if the req.user == admin of community
+        // if not , check if the req.user is the creator
+        isAdmin = post1.postedOnRef.admins.includes(req.user._id)
+        !isAdmin ? creatorOrAdminFilter.creator = req.user._id : ""
+    }
+
+    const post = await postModel.findOneAndDelete(creatorOrAdminFilter)
     if (post) {
         res.json(makeResponse("s", "Selected Post deleted successfully", post))
     } else {
