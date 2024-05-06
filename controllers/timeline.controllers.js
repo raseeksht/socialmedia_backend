@@ -26,8 +26,6 @@ const getTimelineResult = asyncHandler(async (req, res, id, fetchType = "user") 
 
     postFilter.postedOn = fetchType;
 
-    console.log(shareFilter, postFilter)
-
     try {
         const posts = await postModel.find(postFilter).populate("creator", "firstName lastName profilePic");
         const shares = await shareModel.find(shareFilter).populate({

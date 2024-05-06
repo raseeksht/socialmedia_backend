@@ -27,7 +27,6 @@ const addOrRemoveUserToCommunity = async (req, res, action) => {
     try {
         members = JSON.parse(members)
         if (action == "add") {
-            // console.log("we ")
             updateQuery = { $addToSet: { members } }
         } else {
             // action "remove"

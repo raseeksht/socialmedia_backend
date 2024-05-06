@@ -87,15 +87,13 @@ const getUser = asyncHandler(async (req, res) => {
 
 const afterLoginVerify2fa = asyncHandler(async (req, res) => {
     const { otp } = req.body;
-    console.log("i am eher")
     try {
         const decoded = decodeAuthHeaderToken(req);
-        console.log("decoded", decoded)
         if (decoded.error) {
             return res.status(403).json(makeResponse("f", decoded.error))
         }
         const user = await userModel.findOne({ _id: decoded._id })
-        console.log(user)
+
         if (verifyOtp(otp, await user.totp)) {
             const token = await generateJwt({ _id: user._id, twoFactorAuthRequired: true, twoFactorAuthVerified: true })
             res.json({ status: "ok", message: "Valid Otp", token })

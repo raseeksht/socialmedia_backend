@@ -15,7 +15,7 @@ const createChat = asyncHandler(async (req, res) => {
         if (!isGroupChat && participants.length > 2) return res.status(400).json(makeResponse("f", "personal chat cannot contain more than 2 users"))
 
         if (isGroupChat && participants.length < 3) {
-            console.log(participants)
+
             res.statusCode = 400
             throw new Error("group chat must contain at least 2 member excluding yourself")
         }

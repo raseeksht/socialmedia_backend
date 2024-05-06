@@ -19,7 +19,7 @@ const generateJwt = async (payload) => {
 const verifyOtp = (userOtp, totpSecret) => {
     const currentTimestamp = Date.now();
     const validCodes = []
-    console.log(userOtp)
+
     // otp based on timestamp for previous, current and next 30s 
     for (let i = -1; i <= 1; i++) {
         const timestamp = currentTimestamp + (i * 30000)
@@ -41,7 +41,6 @@ const decodeAuthHeaderToken = (req) => {
     const token = authToken.split(" ")[1]
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
     if (decoded) {
-        console.log(decoded)
         return decoded
     } else {
         return { error: "Token Invalid or expired" }

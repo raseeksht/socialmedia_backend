@@ -20,7 +20,6 @@ const declineFriendRequest = async (requestor, decliner) => {
         $pull: { friendRequestReceived: requestor, friendRequestSent: decliner },
     }
     const decline = await userModel.updateMany({ _id: { $in: [requestor, decliner] } }, updateQuery)
-    console.log(decline)
     return decline ? true : false;
 }
 

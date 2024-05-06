@@ -16,8 +16,6 @@ const validateUser = (req, res, next) => {
             }
             next()
         } else {
-            console.log(decodedToken.twoFactorAuthRequired)
-
             res.json(makeResponse("f", "2FA not verified"))
         }
     } else {

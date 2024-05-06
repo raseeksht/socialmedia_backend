@@ -31,7 +31,7 @@ const set2fa = asyncHandler(async (req, res) => {
     try {
         let user = await userModel.findOne({ _id: req.user._id })
         const { totp } = jwt.verify(secretToken, process.env.JWT_SECRET)
-        console.log("topt from token", totp)
+
         if (verifyOtp(otp, totp)) {
             user.totp = totp;
             user.twoFactorAuthRequired = true

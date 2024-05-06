@@ -18,9 +18,8 @@ const like_dislike_handler = async (action, postOrCommentRef, onPostOrCommentOrS
             const data = { liked_by: user._id, pc_ref: postOrCommentRef, like_on: onPostOrCommentOrShare }
             liked = await likeModel.create(data)
 
-
+            // increase number of like by 1
             const haude = await model.findOneAndUpdate({ _id: postOrCommentRef }, { $inc: { likes: 1 } }, { new: true })
-            console.log("liked", haude)
         }
         if (liked) {
             return {
