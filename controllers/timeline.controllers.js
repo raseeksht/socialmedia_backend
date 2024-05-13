@@ -95,11 +95,8 @@ const communityTimeline = asyncHandler(async (req, res) => {
     }
 })
 
-// TODO : combine communityTimeline and userTimeline with conditional filtering
 // TODO : also support page Timeline
 
 export {
-    userTimeline,
-    communityTimeline,
     getTimelineResult
 }

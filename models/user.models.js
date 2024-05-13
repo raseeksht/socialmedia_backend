@@ -21,7 +21,7 @@ const userSchema = mongoose.Schema({
     },
     profilePic: {
         type: String,
-        default: "https://imgs.search.brave.com/x13bsOhuhhsIiiG5GDEv0uF-9-i2z41NdXklnWKv_k4/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9jZG4x/Lmljb25maW5kZXIu/Y29tL2RhdGEvaWNv/bnMvdXNlci1waWN0/dXJlcy8xMDAvdW5r/bm93bi01MTIucG5n",
+        default: `https://api.multiavatar.com/user${Math.floor(Math.random() * 1000)}.png`,
     },
     coverPic: {
         type: String,
